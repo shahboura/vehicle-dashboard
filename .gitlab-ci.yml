@@ -10,7 +10,7 @@ build:
         - "dotnet build"
     artifacts:
       paths:
-        - bin/
+        - "*/bin/"
 
 test:
     stage: test
