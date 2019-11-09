@@ -9,8 +9,9 @@ build:
     script:
         - "dotnet build"
     artifacts:
-      paths:
-        - "*/bin/"
+        paths:
+            - "*/bin"
+        expire_in: 2 week
 
 test:
     stage: test
