@@ -89,11 +89,11 @@ namespace Dashboard.Admin.Controllers
 
         private Owner GenerateOwner(string name, string address)
         {
-            var guid = Guid.NewGuid();
+            var guid = Guid.NewGuid().ToString();
             return new Owner
             {
-                PartitionKey = guid.ToString(),
-                RowKey = guid.ToString(),
+                PartitionKey = guid,
+                RowKey = guid,
                 Name = name,
                 Address = address
             };
