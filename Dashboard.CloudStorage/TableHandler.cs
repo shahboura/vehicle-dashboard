@@ -24,6 +24,7 @@ namespace Dashboard.CloudStorage
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var _client = storageAccount.CreateCloudTableClient();
             _table = _client.GetTableReference(entity.TableName);
+            _table.CreateIfNotExists();
         }
 
         public async Task<T> GetAsync(string partitionKey, string rowKey)
