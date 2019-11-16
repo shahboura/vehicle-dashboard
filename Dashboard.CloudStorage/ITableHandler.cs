@@ -7,10 +7,12 @@ namespace Dashboard.CloudStorage
 {
     public interface ITableHandler<T>
         where T : class, ITableEntity, IEntity, new()
-    {        
-        Task<IEnumerable<T>> GetAsync();
+    {
+        Task CreateIfNotExistsAsync();
+
+        Task<List<T>> GetAsync();
         
-        Task<IEnumerable<T>> GetAsync(string partitionKey);
+        Task<List<T>> GetAsync(string partitionKey);
 
         Task<T> GetAsync(string partitionKey, string rowKey);
 

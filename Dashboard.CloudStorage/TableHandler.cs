@@ -24,7 +24,11 @@ namespace Dashboard.CloudStorage
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var _client = storageAccount.CreateCloudTableClient();
             _table = _client.GetTableReference(entity.TableName);
-            _table.CreateIfNotExists();
+        }
+
+        public Task CreateIfNotExistsAsync()
+        {
+            return _table.CreateIfNotExistsAsync();
         }
 
         public async Task<T> GetAsync(string partitionKey, string rowKey)
@@ -37,12 +41,12 @@ namespace Dashboard.CloudStorage
             return result.Result as T;
         }
 
-        public async Task<IEnumerable<T>> GetAsync()
+        public async Task<List<T>> GetAsync()
         {
             return await ExecuteQueryAsync(new TableQuery<T>());
         }
 
-        public async Task<IEnumerable<T>> GetAsync(string partitionKey)
+        public async Task<List<T>> GetAsync(string partitionKey)
         {
             partitionKey.ThrowIfNullOrWhiteSpace(nameof(partitionKey));
 
@@ -62,7 +66,7 @@ namespace Dashboard.CloudStorage
             return result.Result as T;
         }
 
-        private async Task<IEnumerable<T>> ExecuteQueryAsync(TableQuery<T> query)
+        private async Task<List<T>> ExecuteQueryAsync(TableQuery<T> query)
         {
             var results = new List<T>();
             TableContinuationToken token = null;

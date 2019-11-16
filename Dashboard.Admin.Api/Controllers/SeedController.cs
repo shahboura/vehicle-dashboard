@@ -26,9 +26,15 @@ namespace Dashboard.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task Seed()
+        public async Task<IActionResult> Seed()
         {
             var tasks = new List<Task>();
+
+            tasks.Add(_ownerClient.CreateIfNotExistsAsync());
+            tasks.Add(_vehicleClient.CreateIfNotExistsAsync());
+
+            await Task.WhenAll(tasks);
+            tasks.Clear();
 
             var owner1 = GenerateOwner("Kalles Grustransporter AB", "Cementvägen 8, 111 11 Södertälje");
             tasks.Add(_ownerClient.InsertOrReplaceAsync(owner1));
@@ -43,6 +49,11 @@ namespace Dashboard.Admin.Controllers
             tasks.AddRange(AddVehicles(owner3, "PQR678", "STU901"));
 
             await Task.WhenAll(tasks);
+
+            /* TODO: we need to refactor this, it's place is in respective controller 
+            return CREATED 201 instead with resourceUri
+            i.e. VehiclesController or OwnersController */
+            return Ok();
         }
 
         private static Task<T> InsertEntity<T>(ITableHandler<T> handler, Func<T> generator)
