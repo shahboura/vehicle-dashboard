@@ -1,0 +1,52 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoFixture.Xunit2;
+using Dashboard.Api.Services;
+using Dashboard.CloudStorage;
+using Dashboard.CloudStorage.Entities;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using NSubstitute;
+using Xunit;
+
+namespace Dashboard.Api.Tests.Services
+{
+    public class CloudVehicleServiceTests
+    {
+        [Theory, DefaultAutoData]
+        public async Task GetAllAsync_SingleVehicle_ShouldSetVehicleModel(
+            Vehicle vehicle,
+            [Frozen] ITableHandler<Vehicle> vehicleHandler,
+            CloudVehicleService sut)
+        {
+            vehicleHandler.GetAsync().Returns(new List<Vehicle>{ vehicle });
+
+            var result = await sut.GetAllAsync();
+
+            result.Should().ContainSingle(); 
+            var item = result.First();
+            item.RegNumber.Should().Be(vehicle.RegNumber);
+            item.Connected.Should().Be(vehicle.Connected);
+        }
+
+        [Theory, DefaultAutoData]
+        public async Task GetAllAsync_SingleVehicle_ShouldSetOwner(
+            string scheme, 
+            HostString host,
+            Vehicle vehicle,
+            [Frozen] IHttpContextAccessor context,
+            [Frozen] ITableHandler<Vehicle> vehicleHandler,
+            CloudVehicleService sut)
+        {
+            var expectedOwner = $"{scheme}://{host.Value}/api/owners/{vehicle.PartitionKey}";
+            context.HttpContext.Request.Scheme.Returns(scheme);
+            context.HttpContext.Request.Host.Returns(host);
+            vehicleHandler.GetAsync().Returns(new List<Vehicle>{ vehicle });
+
+            var result = await sut.GetAllAsync();
+
+            result.First().Owner.Href.Should().Be(expectedOwner);
+        }
+    }
+}

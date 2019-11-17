@@ -12,7 +12,7 @@ namespace Dashboard.Api.Services
 {
     public class CloudVehicleService : IVehicleService
     {
-        private readonly string _host;
+        private readonly HttpRequest _request;
         private readonly ITableHandler<Vehicle> _vehicleClient;
 
         public CloudVehicleService(IHttpContextAccessor httpContextAccessor,
@@ -23,8 +23,7 @@ namespace Dashboard.Api.Services
                 throw new ArgumentNullException(nameof(httpContextAccessor));
             }
 
-            var request = httpContextAccessor.HttpContext.Request;
-            _host = $"{request.Scheme}://{request.Host.Value}";
+            _request = httpContextAccessor.HttpContext.Request;
             _vehicleClient = vehicleClient ?? throw new ArgumentNullException(nameof(vehicleClient));
         }
 
@@ -45,6 +44,8 @@ namespace Dashboard.Api.Services
         private IEnumerable<VehicleViewModel> BuildViewModel(IEnumerable<Vehicle> vehicles)
         {
             var result = new List<VehicleViewModel>();
+            var _host = $"{_request.Scheme}://{_request.Host.Value}";
+            
             foreach (var vehicle in vehicles)
             {
                 result.Add(new VehicleViewModel(
