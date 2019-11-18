@@ -3,15 +3,13 @@
 This is a simple pipeline example for a .NET Core application, showing just
 how easy it is to get up and running with .NET development using GitLab.
 
-## Requirements
-
-* [VS code](https://code.visualstudio.com/) or
-* [Docker](https://www.docker.com/)
-* [Azure Storage Emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator) - *Windows only*
-
 ## Installation
 
-CommandLine Windows
+We can run the services using either [CLI](#commandline) or [docker](#docker).
+
+### CommandLine
+
+* Powershell
 
 ```powershell
 # Running dashboard.admin
@@ -21,17 +19,23 @@ dotnet run --project .\Dashboard.Admin.Api --AzureCloudStorage "UseDevelopmentSt
 dotnet run --project .\Dashboard.Api --AzureCloudStorage "UseDevelopmentStorage=true"
 ```
 
+*Note: If azure storage emulator installed, we can use `"UseDevelopmentStorage=true"`*
+
+* Bash
 CommandLine Linus / MacOSX
 
-```powershell
+```bash
 # Running dashboard.admin
-dotnet run --project .\Dashboard.Admin.Api --AzureCloudStorage "<CONNECTION-STRING>"
+dotnet run --project Dashboard.Admin.Api --AzureCloudStorage "<CONNECTION-STRING>"
 
 # Running dashboard.api
-dotnet run --project .\Dashboard.Api --AzureCloudStorage "CONNECTION-STRING"
+dotnet run --project Dashboard.Api --AzureCloudStorage "CONNECTION-STRING"
 ```
 
-Docker ***COMING SOON***
+### Docker
+
+* Set azure storage connection string in development.env `AzureCloudStorage=VALUE`
+* run `docker-compose up`
 
 ## Reference links
 
