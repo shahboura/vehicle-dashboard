@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  dashboard-api:
+    ports:
+      - "5001:80"
+    build: 
+      context: .
+      dockerfile: Dashboard.Api/Dockerfile
+    env_file: 
+      - development.env
+
+  dashboard-admin-api:
+    ports:
+      - "5003:80"
+    build: 
+      context: .
+      dockerfile: Dashboard.Admin.Api/Dockerfile
+    env_file: 
+      - development.env
