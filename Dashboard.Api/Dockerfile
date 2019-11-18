@@ -10,7 +10,7 @@ RUN dotnet restore
 
 COPY . .
 WORKDIR /src/Dashboard.Api/
-RUN dotnet publish --no-restore -c Release -o /app
+RUN dotnet publish -c Release -o /app
 
 # Runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0
