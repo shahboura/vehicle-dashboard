@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dashboard.Api.Services;
 using Dashboard.Api.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using static Dashboard.Api.Constants;
 
 namespace Dashboard.Api.Controllers
@@ -11,15 +14,30 @@ namespace Dashboard.Api.Controllers
     [Route(ApiRoutes.Vehicles)]
     public class VehiclesController : ControllerBase
     {
+        private readonly ILogger<VehiclesController> _logger;
         private readonly IVehicleService _vehicleService;
 
-        public VehiclesController(IVehicleService vehicleService)
-            => _vehicleService = vehicleService;
+        public VehiclesController(ILogger<VehiclesController> logger, 
+            IVehicleService vehicleService)
+        {
+            _logger = logger;
+            _vehicleService = vehicleService;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetVehicles()
         {
-            var vehicles = await _vehicleService.GetAllAsync();
+            IEnumerable<VehicleViewModel> vehicles = null;
+            
+            try {
+                vehicles = await _vehicleService.GetAllAsync();
+            }
+            catch(Exception exception) {
+                _logger.LogError(exception.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, 
+                    new ErrorInfo(ErrorType.UnhandledError, "Error fetching vehicles from storage."));
+            }
+
             return Ok(vehicles);
         }
 
