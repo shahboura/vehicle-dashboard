@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Dashboard.Api.Services;
 using Dashboard.Api.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using static Dashboard.Api.Constants;
 
 namespace Dashboard.Api.Controllers
@@ -16,12 +13,14 @@ namespace Dashboard.Api.Controllers
     {
         private readonly IVehicleService _vehicleService;
 
-        public VehiclesController(IVehicleService vehicleService) => _vehicleService = vehicleService;
+        public VehiclesController(IVehicleService vehicleService)
+            => _vehicleService = vehicleService;
 
         [HttpGet]
-        public async Task<IEnumerable<VehicleViewModel>> GetVehicles()
+        public async Task<IActionResult> GetVehicles()
         {
-            return await _vehicleService.GetAllAsync();
+            var vehicles = await _vehicleService.GetAllAsync();
+            return Ok(vehicles);
         }
 
         [HttpGet]

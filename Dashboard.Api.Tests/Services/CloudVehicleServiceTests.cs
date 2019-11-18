@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,6 +48,35 @@ namespace Dashboard.Api.Tests.Services
             var result = await sut.GetAllAsync();
 
             result.First().Owner.Href.Should().Be(expectedOwner);
+        }
+
+        [Theory, DefaultAutoData]
+        public void GetByOwnerAsync_OwnerIdIsNull_ThrowsArgumentNullException(
+            CloudVehicleService sut)
+        {
+            Func<Task> act = async () => await sut.GetByOwnerAsync(null);
+
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("ownerId");
+        }
+
+        [Theory, DefaultAutoData]
+        public void GetByOwnerAsync_OwnerIdIsEmpty_ThrowsArgumentNullException(
+            CloudVehicleService sut)
+        {
+            Func<Task> act = async () => await sut.GetByOwnerAsync(string.Empty);
+
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("ownerId");
+        }
+
+        [Theory, DefaultAutoData]
+        public async Task GetByOwnerAsync_ShouldGetVehiclesByPartitionKey(
+            string ownerId,
+            ITableHandler<Vehicle> vehicleHandler,
+            CloudVehicleService sut)
+        {
+            //TODO: add unit tests here
         }
     }
 }
