@@ -16,19 +16,16 @@ namespace Dashboard.Api.Tests.Services
     public class CloudVehicleServiceTests
     {
         [Theory, DefaultAutoData]
-        public async Task GetAllAsync_SingleVehicle_ShouldSetVehicleModel(
-            Vehicle vehicle,
+        public async Task GetAllAsync_ShouldGetVehicleViewModels(
+            List<Vehicle> vehicles,
             [Frozen] ITableHandler<Vehicle> vehicleHandler,
             CloudVehicleService sut)
         {
-            vehicleHandler.GetAsync().Returns(new List<Vehicle>{ vehicle });
+            vehicleHandler.GetAsync().Returns(vehicles);
 
             var result = await sut.GetAllAsync();
 
-            result.Should().ContainSingle(); 
-            var item = result.First();
-            item.RegNumber.Should().Be(vehicle.RegNumber);
-            item.Connected.Should().Be(vehicle.Connected);
+            result.Should().BeEquivalentTo(vehicles, (x) => x.ExcludingMissingMembers());
         }
 
         [Theory, DefaultAutoData]
@@ -71,12 +68,48 @@ namespace Dashboard.Api.Tests.Services
         }
 
         [Theory, DefaultAutoData]
-        public async Task GetByOwnerAsync_ShouldGetVehiclesByPartitionKey(
+        public async Task GetByOwnerAsync_GivenOwnerId_ShouldGetByPartitionKey(
             string ownerId,
-            ITableHandler<Vehicle> vehicleHandler,
+            [Frozen] ITableHandler<Vehicle> vehicleHandler,
             CloudVehicleService sut)
         {
-            //TODO: add unit tests here
+            var results = await sut.GetByOwnerAsync(ownerId);
+
+            await vehicleHandler.Received().GetAsync(ownerId);
+        }
+
+        [Theory, DefaultAutoData]
+        public async Task GetByOwnerAsync_ShouldGetVehicleViewModels(
+            string ownerId,
+            List<Vehicle> vehicles,
+            [Frozen] ITableHandler<Vehicle> vehicleHandler,
+            CloudVehicleService sut)
+        {
+            vehicleHandler.GetAsync(Arg.Any<string>()).Returns(vehicles);
+
+            var results = await sut.GetByOwnerAsync(ownerId);
+
+            results.Should().BeEquivalentTo(vehicles, (x) => x.ExcludingMissingMembers());
+        }
+
+        [Theory, DefaultAutoData]
+        public async Task GetByOwnerAsync_SingleVehicle_ShouldSetOwner(
+            string ownerId,
+            string scheme, 
+            HostString host,
+            Vehicle vehicle,
+            [Frozen] IHttpContextAccessor context,
+            [Frozen] ITableHandler<Vehicle> vehicleHandler,
+            CloudVehicleService sut)
+        {
+            var expectedOwner = $"{scheme}://{host.Value}/api/owners/{vehicle.PartitionKey}";
+            context.HttpContext.Request.Scheme.Returns(scheme);
+            context.HttpContext.Request.Host.Returns(host);
+            vehicleHandler.GetAsync(ownerId).Returns(new List<Vehicle>{ vehicle });
+
+            var result = await sut.GetByOwnerAsync(ownerId);
+
+            result.First().Owner.Href.Should().Be(expectedOwner);
         }
     }
 }
