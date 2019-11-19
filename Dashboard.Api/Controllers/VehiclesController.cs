@@ -25,6 +25,8 @@ namespace Dashboard.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(VehicleViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorInfo), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetVehicles()
         {
             IEnumerable<VehicleViewModel> vehicles = null;

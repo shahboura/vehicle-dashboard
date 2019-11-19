@@ -24,6 +24,8 @@ namespace Dashboard.Api
             services.AddScoped(typeof(ITableHandler<>), typeof(TableHandler<>));
             services.AddScoped<IVehicleService, CloudVehicleService>();
             services.AddControllers();
+
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +46,9 @@ namespace Dashboard.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
         }
     }
 }
