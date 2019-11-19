@@ -1,4 +1,4 @@
-using Dashboard.Api.Services;
+using System;
 using Dashboard.CloudStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Dashboard.Api
+namespace Dashboard.Admin.Api
 {
     public class Startup
     {
@@ -20,12 +20,9 @@ namespace Dashboard.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
+            services.AddSingleton<Random>(new Random());
             services.AddScoped(typeof(ITableHandler<>), typeof(TableHandler<>));
-            services.AddScoped<IVehicleService, CloudVehicleService>();
             services.AddControllers();
-
-            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,9 +43,6 @@ namespace Dashboard.Api
             {
                 endpoints.MapControllers();
             });
-
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
         }
     }
 }

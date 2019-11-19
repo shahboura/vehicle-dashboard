@@ -1,9 +1,43 @@
-## Introduction
+# Introduction
 
 This is a simple pipeline example for a .NET Core application, showing just
 how easy it is to get up and running with .NET development using GitLab.
 
-# Reference links
+## Installation
+
+We can run the services using either [CLI](#commandline) or [docker](#docker).
+
+### CommandLine
+
+* Powershell
+
+```powershell
+# Running dashboard.admin
+dotnet run --project .\Dashboard.Admin.Api --AzureCloudStorage "UseDevelopmentStorage=true"
+
+# Running dashboard.api
+dotnet run --project .\Dashboard.Api --AzureCloudStorage "UseDevelopmentStorage=true"
+```
+
+*Note: If azure storage emulator installed, we can use `"UseDevelopmentStorage=true"`*
+
+* Bash
+CommandLine Linus / MacOSX
+
+```bash
+# Running dashboard.admin
+dotnet run --project Dashboard.Admin.Api --AzureCloudStorage "<CONNECTION-STRING>"
+
+# Running dashboard.api
+dotnet run --project Dashboard.Api --AzureCloudStorage "CONNECTION-STRING"
+```
+
+### Docker
+
+* Set azure storage connection string in development.env `AzureCloudStorage=VALUE`
+* run `docker-compose up`
+
+## Reference links
 
 - [GitLab CI Documentation](https://docs.gitlab.com/ee/ci/)
 - [.NET Hello World tutorial](https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/)
@@ -30,14 +64,14 @@ to build your code. Let's take a look, section by section.
 First, we note that we want to use the official Microsoft .NET SDK image
 to build our project.
 
-```
-image: microsoft/dotnet:latest
+```YAML
+image: mcr.microsoft.com/dotnet/core/sdk:3.0
 ```
 
 We're defining two stages here: `build`, and `test`. As your project grows
 in complexity you can add more of these.
 
-```
+```YAML
 stages:
     - build
     - test
@@ -48,7 +82,7 @@ identifies the `bin` folder as the output directory. Anything in the `bin` folde
 will be automatically handed off to future stages, and is also downloadable through
 the web UI.
 
-```
+```YAML
 build:
     stage: build
     script:
@@ -60,7 +94,7 @@ build:
 
 Similar to the build step, we get our test output simply by running `dotnet test`.
 
-```
+```YAML
 test:
     stage: test
     script: 
