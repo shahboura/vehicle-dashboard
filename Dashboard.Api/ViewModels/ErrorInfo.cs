@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace Dashboard.Api.ViewModels
 {
@@ -20,15 +19,8 @@ namespace Dashboard.Api.ViewModels
             _messages.AddRange(messages);
         }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ErrorType Type { get; }
         public IEnumerable<string> Messages => _messages;
-    }
-
-    public enum ErrorType
-    {
-        Validation,
-        InvalidOperation,
-        UnhandledError
     }
 }
