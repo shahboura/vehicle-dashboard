@@ -8,6 +8,7 @@ using Dashboard.Api.ViewModels;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
@@ -31,6 +32,20 @@ namespace Dashboard.Api.Tests.Controllers
             errorInfo.Should().NotBeNull();
             errorInfo.Type.Should().Be(ErrorType.UnhandledError);
             errorInfo.Messages.Should().BeEquivalentTo("Error fetching vehicles from storage.");
+        }
+
+        [Theory, DefaultAutoData]
+        public async Task GetVehicles_ExceptionThrown_ShouldLog(
+            Exception exception,
+            [Frozen] ILogger<VehiclesController> logger,
+            [Frozen] IVehicleService vehicleService,
+            VehiclesController sut)
+        {
+            vehicleService.GetAllAsync().Throws(exception);
+
+            await sut.GetVehicles();
+
+            logger.Received().LogError(exception.ToString());
         }
 
         [Theory, DefaultAutoData]
