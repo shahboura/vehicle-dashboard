@@ -65,7 +65,7 @@ namespace Dashboard.Api.Controllers
             var errorInfo = result.Value as ErrorInfo;
             errorInfo.Should().NotBeNull();
             errorInfo.Type.Should().Be(ErrorType.UnhandledError);
-            errorInfo.Messages.Should().BeEquivalentTo("Error fetching vehicles per owner from storage.");
+            errorInfo.Messages.Should().BeEquivalentTo($"Error fetching vehicles for owner id {ownerId}.");
         } 
 
         [Theory, DefaultAutoData]
@@ -80,7 +80,7 @@ namespace Dashboard.Api.Controllers
 
             await sut.GetVehicles(ownerId);
 
-            logger.Received().LogError(exception.ToString());
+            logger.ReceivedWithAnyArgs().LogError(exception, $"Error fetching vehicle for owner {ownerId}.");
         }
 
         [Theory, DefaultAutoData]
