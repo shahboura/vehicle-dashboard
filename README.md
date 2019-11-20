@@ -3,9 +3,14 @@
 This is a simple pipeline example for a .NET Core application, showing just
 how easy it is to get up and running with .NET development using GitLab.
 
+## Requirements
+
+If using [docker](#docker) or azure storage emulator not installed, storage connection string is needed.
+Follow this [link](https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal) to create one.
+
 ## Installation
 
-We can run the services using either [CLI](#commandline) or [docker](#docker).
+We can run the services using either [CLI](#CommandLine) or [docker](#docker).
 
 ### CommandLine
 
@@ -37,10 +42,18 @@ dotnet run --project Dashboard.Api --AzureCloudStorage "CONNECTION-STRING"
 * Set azure storage connection string in development.env `AzureCloudStorage=VALUE`
 * run `docker-compose up`
 
+## Endpoints
+
+* Swagger: <http://localhost:5001/swagger/>
+* Vehicles: <http://localhost:5001/api/vehicles>
+* Vehicles / owner: <http://localhost:5001/api/owners/{ownerId}/vehicles>
+* Seed data: <http://localhost:5003/api/seed>
+* Ping vehicles: <http://localhost:5003/api/vehicles/ping>
+
 ## Reference links
 
-- [GitLab CI Documentation](https://docs.gitlab.com/ee/ci/)
-- [.NET Hello World tutorial](https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/)
+* [GitLab CI Documentation](https://docs.gitlab.com/ee/ci/)
+* [.NET Hello World tutorial](https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/)
 
 If you're new to .NET you'll want to check out the tutorial, but if you're
 already a seasoned developer considering building your own .NET app with GitLab,
@@ -97,7 +110,7 @@ Similar to the build step, we get our test output simply by running `dotnet test
 ```YAML
 test:
     stage: test
-    script: 
+    script:
         - "dotnet test"
 ```
 
