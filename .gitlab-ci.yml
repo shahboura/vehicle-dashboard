@@ -8,11 +8,21 @@ build:
     stage: build
     script:
         - dotnet build
-        - docker build -t dashboard-api -f .\Dashboard.Api\Dockerfile .
-        - docker build -t dashboard-admin-api -f .\Dashboard.Admin.Api\Dockerfile .
     artifacts:
         paths:
             - "*/bin"
+        expire_in: 2 week
+
+build-image:
+    stage: build
+    services:
+        - docker:dind
+    image: docker
+    script:
+        # - docker build -t dashboard-api -f .\Dashboard.Api\Dockerfile .
+        # - docker build -t dashboard-admin-api -f .\Dashboard.Admin.Api\Dockerfile .
+        - docker-compose up
+    artifacts:
         expire_in: 2 week
 
 test:
