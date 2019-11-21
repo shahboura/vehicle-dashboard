@@ -19,8 +19,8 @@ build-image:
         - docker:dind
     image: docker
     script:
-        - docker build -t dashboard-api -f .\Dashboard.Api\Dockerfile .
-        - docker build -t dashboard-admin-api -f .\Dashboard.Admin.Api\Dockerfile .
+        - docker build -t dashboard-api -f Dashboard.Api/Dockerfile .
+        - docker build -t dashboard-admin-api -f Dashboard.Admin.Api/Dockerfile .
     artifacts:
         expire_in: 2 week
 
