@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Dashboard.CloudStorage\Dashboard.CloudStorage.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NSwag.AspNetCore" Version="13.1.5" />
+  </ItemGroup>
+
 </Project>

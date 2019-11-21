@@ -23,6 +23,8 @@ namespace Dashboard.Admin.Api
             services.AddSingleton<Random>(new Random());
             services.AddScoped(typeof(ITableHandler<>), typeof(TableHandler<>));
             services.AddControllers();
+
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +45,9 @@ namespace Dashboard.Admin.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
         }
     }
 }

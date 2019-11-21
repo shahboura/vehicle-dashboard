@@ -45,10 +45,11 @@ dotnet run --project Dashboard.Api --AzureCloudStorage "CONNECTION-STRING"
 ## Endpoints
 
 * Swagger: <http://localhost:5001/swagger/>
-* Vehicles: <http://localhost:5001/api/vehicles>
-* Vehicles / owner: <http://localhost:5001/api/owners/{ownerId}/vehicles>
-* Seed data: <http://localhost:5003/api/seed>
-* Ping vehicles: <http://localhost:5003/api/vehicles/ping>
+* Vehicles: GET <http://localhost:5001/api/vehicles>
+* Vehicles / owner: GET <http://localhost:5001/api/owners/{ownerId}/vehicles>
+* Swagger admin: <http://localhost:5003/swagger/>
+* Seed data: POST <http://localhost:5003/api/seed>
+* Ping vehicles: POST <http://localhost:5003/api/vehicles/ping>
 
 ## Reference links
 

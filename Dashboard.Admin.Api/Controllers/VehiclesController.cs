@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dashboard.CloudStorage;
 using Dashboard.CloudStorage.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos.Table;
 
 namespace Dashboard.Admin.Controllers
 {
@@ -24,6 +24,7 @@ namespace Dashboard.Admin.Controllers
 
         [HttpPost]
         [Route("ping")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Ping()
         {
             var tasks = new List<Task>();
