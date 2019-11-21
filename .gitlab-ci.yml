@@ -8,6 +8,7 @@ build:
     stage: build
     script:
         - "dotnet build"
+        - "docker-compose up"
     artifacts:
         paths:
             - "*/bin"
