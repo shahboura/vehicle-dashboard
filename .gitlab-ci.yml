@@ -7,8 +7,9 @@ stages:
 build:
     stage: build
     script:
-        - "dotnet build"
-        - "docker-compose up"
+        - dotnet build
+        - docker build -t dashboard-api -f .\Dashboard.Api\Dockerfile .
+        - docker build -t dashboard-admin-api -f .\Dashboard.Admin.Api\Dockerfile .
     artifacts:
         paths:
             - "*/bin"
