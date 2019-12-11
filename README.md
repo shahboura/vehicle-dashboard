@@ -1,3 +1,5 @@
+[![pipeline status](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/pipeline.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
+
 # Introduction
 
 This is a simple pipeline example for a .NET Core application, showing just
