@@ -3,6 +3,8 @@
 
 .docker_job_template: &docker_definition
     image: docker
+    services:
+        - docker:dind
     before_script:
         - docker info
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
