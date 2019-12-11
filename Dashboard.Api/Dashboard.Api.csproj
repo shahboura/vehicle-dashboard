@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSwag.AspNetCOre" Version="13.1.5" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.1.5" />
   </ItemGroup>
 
 </Project>

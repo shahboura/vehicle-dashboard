@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src/
-COPY alten-awesome-dashboard.sln .
+COPY vehicles-dashboard.sln .
 COPY Dashboard.CloudStorage/Dashboard.CloudStorage.csproj /src/Dashboard.CloudStorage/
 COPY Dashboard.Api/Dashboard.Api.csproj /src/Dashboard.Api/
 COPY Dashboard.Api.Tests/Dashboard.Api.Tests.csproj /src/Dashboard.Api.Tests/
