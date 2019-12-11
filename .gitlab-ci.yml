@@ -1,11 +1,20 @@
-image: mcr.microsoft.com/dotnet/core/sdk:3.0
+image: docker
+
+services:
+    - docker:dind
+
+before_script:
+    - docker info
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
 
 stages:
     - build
     - test
+    - push
 
 build:
     stage: build
+    image: mcr.microsoft.com/dotnet/core/sdk:3.0
     script:
         - dotnet build
     artifacts:
@@ -13,18 +22,28 @@ build:
             - "*/bin"
         expire_in: 2 week
 
-build-image:
+build-api-image:
     stage: build
-    services:
-        - docker:dind
-    image: docker
     script:
-        - docker build -t dashboard-api -f Dashboard.Api/Dockerfile .
-        - docker build -t dashboard-admin-api -f Dashboard.Admin.Api/Dockerfile .
-    artifacts:
-        expire_in: 2 week
+        - docker build
+            --pull
+            --build-arg VCS_REF=$CI_COMMIT_SHA
+            --build-arg VCS_URL=$CI_PROJECT_URL
+            --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+            --file Dashboard.Api/Dockerfile .
+        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
 test:
     stage: test
+    image: mcr.microsoft.com/dotnet/core/sdk:3.0
     script: 
         - "dotnet test"
+
+push-latest-api-image:
+    variables:
+        GIT_STRATEGY: none
+    stage: push
+    script:
+        - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+        - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
+        - docker push  $CI_REGISTRY_IMAGE:latest
