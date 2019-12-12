@@ -58,7 +58,7 @@ unit-test:
     script: 
         - "dotnet test"
 
-push-latest-api-image:
+push-api-image:
     <<: *docker_definition
     stage: deploy
     variables:
@@ -69,3 +69,15 @@ push-latest-api-image:
         - docker pull $_API_REGISTRY:$CI_COMMIT_SHA
         - docker tag $_API_REGISTRY:$CI_COMMIT_SHA $_API_REGISTRY:latest
         - docker push $_API_REGISTRY:latest
+
+push-admin-api-image:
+    <<: *docker_definition
+    stage: deploy
+    variables:
+        GIT_STRATEGY: none
+    only:
+        - master
+    script:
+        - docker pull $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
+        - docker tag $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA $_ADMIN_API_REGISTRY:latest
+        - docker push $_ADMIN_API_REGISTRY:latest
