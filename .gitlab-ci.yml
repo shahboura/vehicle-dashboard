@@ -8,11 +8,12 @@
     before_script:
         - docker info
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    variables:
+        GIT_STRATEGY: none
 
 variables:
-    _REGISTRY: registry.gitlab.com/shahboura
-    _API_REGISTRY: $_REGISTRY/vehicle-api
-    _ADMIN_API_REGISTRY: $_REGISTRY/vehicle-admin-api
+    _API_REGISTRY: $CI_REGISTRY_IMAGE/vehicle-api
+    _ADMIN_API_REGISTRY: $CI_REGISTRY_IMAGE/vehicle-admin-api
 
 stages:
     - build
@@ -62,8 +63,6 @@ unit-test:
 push-latest-api-image:
     <<: *docker_definition
     stage: deploy
-    variables:
-        GIT_STRATEGY: none
     only:
         - master
     script:
