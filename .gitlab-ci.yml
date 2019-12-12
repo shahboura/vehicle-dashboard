@@ -9,6 +9,9 @@
         - docker info
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
 
+variables:
+    _API_REGISTRY: $CI_REGISTRY/vehicle-api
+
 stages:
     - build
     - test
@@ -32,9 +35,9 @@ build-api-image:
             --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
             --build-arg VCS_URL=$CI_PROJECT_URL
-            --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+            --tag $_API_REGISTRY:$CI_COMMIT_SHA
             --file Dashboard.Api/Dockerfile .
-        - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+        - docker push $_API_REGISTRY:$CI_COMMIT_SHA
 
 unit-test:
     <<: *sdk_definition
@@ -50,6 +53,6 @@ push-latest-api-image:
     only:
         - master
     script:
-        - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-        - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
-        - docker push  $CI_REGISTRY_IMAGE:latest
+        - docker pull $_API_REGISTRY:$CI_COMMIT_SHA
+        - docker tag $_API_REGISTRY:$CI_COMMIT_SHA $_API_REGISTRY:latest
+        - docker push $_API_REGISTRY:latest
