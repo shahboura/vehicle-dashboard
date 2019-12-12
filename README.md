@@ -1,4 +1,4 @@
-[![pipeline status](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/pipeline.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
+[![build status](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/pipeline.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
 
 # Introduction
 
