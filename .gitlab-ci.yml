@@ -8,8 +8,6 @@
     before_script:
         - docker info
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
-    variables:
-        GIT_STRATEGY: none
 
 variables:
     _API_REGISTRY: $CI_REGISTRY_IMAGE/vehicle-api
@@ -63,6 +61,8 @@ unit-test:
 push-latest-api-image:
     <<: *docker_definition
     stage: deploy
+    variables:
+        GIT_STRATEGY: none
     only:
         - master
     script:
