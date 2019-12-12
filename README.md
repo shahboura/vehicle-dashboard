@@ -1,5 +1,7 @@
 [![pipeline status](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/pipeline.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
 
+[![coverage report](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/coverage.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
+
 # Introduction
 
 This is a sample project combining .net, docker & gitlab. Idea is to provide API and admin service viewing vehicle list and their status. Status of the vehicles are changing depending on ping request.
