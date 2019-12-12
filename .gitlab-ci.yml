@@ -35,7 +35,6 @@ build-api-image:
     stage: build
     script:
         - docker build
-            --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
             --build-arg VCS_URL=$CI_PROJECT_URL
             --tag $_API_REGISTRY:$CI_COMMIT_SHA
@@ -47,7 +46,6 @@ build-admin-api-image:
     stage: build
     script:
         - docker build
-            --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
             --build-arg VCS_URL=$CI_PROJECT_URL
             --tag $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
