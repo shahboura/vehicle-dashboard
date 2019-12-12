@@ -56,14 +56,17 @@ unit-test:
     <<: *sdk_definition
     stage: test
     before_script:
-        - dotnet tool install --global dotnet-reportgenerator-globaltool
+        - dotnet tool install --global dotnet-reportgenerator-globaltool --tool-path tools
     script: 
         - "dotnet test --collect:'XPlat Code Coverage'"
-        - reportgenerator "-reports:Dashboard.Api.Tests/TestResults/*/coverage.cobertura.xml"
+        - ./tools/reportgenerator "-reports:Dashboard.Api.Tests/TestResults/*/coverage.cobertura.xml"
             "-targetdir:coveragereport" "-reporttypes:HTML;TextSummary;Badges"
+        - mv coveragereport/badge_combined.svg coverage.svg
     artifacts:
         paths:
             - coveragereport
+            - coveragereport/coverage.svg
+            - coveragereport/badge_branchcoverage.svg
 
 push-api-image:
     <<: *docker_definition
