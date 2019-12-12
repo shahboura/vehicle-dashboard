@@ -55,8 +55,15 @@ build-admin-api-image:
 unit-test:
     <<: *sdk_definition
     stage: test
+    before_script:
+        - dotnet tool install --global dotnet-reportgenerator-globaltool
     script: 
-        - "dotnet test"
+        - "dotnet test --collect:'XPlat Code Coverage'"
+        - reportgenerator "-reports:Dashboard.Api.Tests/TestResults/*/coverage.cobertura.xml"
+            "-targetdir:coveragereport" "-reporttypes:HTML;TextSummary;Badges"
+    artifacts:
+        paths:
+            - coveragereport
 
 push-api-image:
     <<: *docker_definition
