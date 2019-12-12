@@ -10,7 +10,7 @@
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
 
 variables:
-    _REGISTRY: $CI_REGISTRY/$CI_REGISTRY_USER
+    _REGISTRY: registry.gitlab.com/shahboura
     _API_REGISTRY: $_REGISTRY/vehicle-api
     _ADMIN_API_REGISTRY: $_REGISTRY/vehicle-admin-api
 
