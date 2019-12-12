@@ -10,7 +10,8 @@
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
 
 variables:
-    _API_REGISTRY: $CI_REGISTRY/vehicle-api
+    _API_REGISTRY: $CI_REGISTRY_IMAGE/vehicle-api
+    _ADMIN_API_REGISTRY: $CI_REGISTRY_IMAGE/vehicle-admin-api
 
 stages:
     - build
@@ -39,13 +40,25 @@ build-api-image:
             --file Dashboard.Api/Dockerfile .
         - docker push $_API_REGISTRY:$CI_COMMIT_SHA
 
+build-admin-api-image:
+    <<: *docker_definition
+    stage: build
+    script:
+        - docker build
+            --pull
+            --build-arg VCS_REF=$CI_COMMIT_SHA
+            --build-arg VCS_URL=$CI_PROJECT_URL
+            --tag $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
+            --file Dashboard.Admin.Api/Dockerfile .
+        - docker push $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
+
 unit-test:
     <<: *sdk_definition
     stage: test
     script: 
         - "dotnet test"
 
-push-latest-api-image:
+push-api-image:
     <<: *docker_definition
     stage: deploy
     variables:
@@ -56,3 +69,15 @@ push-latest-api-image:
         - docker pull $_API_REGISTRY:$CI_COMMIT_SHA
         - docker tag $_API_REGISTRY:$CI_COMMIT_SHA $_API_REGISTRY:latest
         - docker push $_API_REGISTRY:latest
+
+push-admin-api-image:
+    <<: *docker_definition
+    stage: deploy
+    variables:
+        GIT_STRATEGY: none
+    only:
+        - master
+    script:
+        - docker pull $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
+        - docker tag $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA $_ADMIN_API_REGISTRY:latest
+        - docker push $_ADMIN_API_REGISTRY:latest
