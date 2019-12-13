@@ -1,6 +1,4 @@
-[![pipeline status](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/pipeline.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
-
-[![coverage report](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/coverage.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
+[![pipeline status](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/pipeline.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master) [![coverage report](https://gitlab.com/shahboura/github-vehicle-dashboard/badges/master/coverage.svg)](https://gitlab.com/shahboura/github-vehicle-dashboard/commits/master)
 
 # Introduction
 

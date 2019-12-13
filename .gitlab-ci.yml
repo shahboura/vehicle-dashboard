@@ -9,6 +9,12 @@
         - docker info
         - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
 
+.docker_job_push_template: &docker_push_definition
+    <<: *docker_definition
+    variables:
+        GIT_STRATEGY: none
+    dependencies: []
+
 variables:
     _API_REGISTRY: $CI_REGISTRY_IMAGE/vehicle-api
     _ADMIN_API_REGISTRY: $CI_REGISTRY_IMAGE/vehicle-admin-api
@@ -68,10 +74,8 @@ unit-test:
             - coveragereport
 
 push-api-image:
-    <<: *docker_definition
+    <<: *docker_push_definition
     stage: deploy
-    variables:
-        GIT_STRATEGY: none
     only:
         - master
     script:
@@ -80,10 +84,8 @@ push-api-image:
         - docker push $_API_REGISTRY:latest
 
 push-admin-api-image:
-    <<: *docker_definition
+    <<: *docker_push_definition
     stage: deploy
-    variables:
-        GIT_STRATEGY: none
     only:
         - master
     script:
