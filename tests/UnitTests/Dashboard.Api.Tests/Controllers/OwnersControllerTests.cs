@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoFixture.Xunit2;
+using Dashboard.Api.Controllers;
 using Dashboard.Api.Services;
 using Dashboard.Api.Tests;
 using Dashboard.Api.ViewModels;
