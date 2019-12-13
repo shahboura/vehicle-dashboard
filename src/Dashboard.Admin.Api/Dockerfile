@@ -1,10 +1,9 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
-WORKDIR /src/
 COPY vehicles-dashboard.sln .
 COPY ./src/Dashboard.CloudStorage/Dashboard.CloudStorage.csproj /src/Dashboard.CloudStorage/
 COPY ./src/Dashboard.Api/Dashboard.Api.csproj /src/Dashboard.Api/
 COPY ./src/Dashboard.Admin.Api/Dashboard.Admin.Api.csproj /src/Dashboard.Admin.Api/ 
-COPY ./tests/UnitTests/Dashboard.Api.Tests/Dashboard.Api.Tests.csproj /src/Dashboard.Api.Tests/
+COPY ./tests/UnitTests/Dashboard.Api.Tests/Dashboard.Api.Tests.csproj /tests/UnitTests/Dashboard.Api.Tests/
 
 RUN dotnet restore
 

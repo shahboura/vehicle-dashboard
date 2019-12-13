@@ -5,7 +5,7 @@ services:
       - "5001:80"
     build: 
       context: .
-      dockerfile: Dashboard.Api/Dockerfile
+      dockerfile: ./src/Dashboard.Api/Dockerfile
     env_file: 
       - development.env
 
@@ -14,6 +14,6 @@ services:
       - "5003:80"
     build: 
       context: .
-      dockerfile: Dashboard.Admin.Api/Dockerfile
+      dockerfile: ./src/Dashboard.Admin.Api/Dockerfile
     env_file: 
       - development.env
