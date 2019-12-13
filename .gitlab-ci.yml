@@ -32,7 +32,6 @@ build:
     artifacts:
         paths:
             - "src/*/bin"
-            - "tests/*/*/bin"
         expire_in: 2 week
 
 build-api-image:
