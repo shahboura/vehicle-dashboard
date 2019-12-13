@@ -28,7 +28,7 @@ build:
     <<: *sdk_definition
     stage: build
     script:
-        - dotnet build
+        - dotnet build -c Release
     artifacts:
         paths:
             - "src/*/bin"
@@ -67,7 +67,7 @@ unit-test:
     before_script:
         - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
     script: 
-        - "dotnet test --no-build --collect:'XPlat Code Coverage'"
+        - "dotnet test --collect:'XPlat Code Coverage'"
         - ./tools/reportgenerator "-reports:tests/*/*/TestResults/*/coverage.cobertura.xml"
             "-targetdir:coveragereport" "-reporttypes:HTML;TextSummary;Badges"
         - cat ./coveragereport/Summary.txt
