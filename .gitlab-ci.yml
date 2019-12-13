@@ -38,6 +38,7 @@ build-api-image:
     <<: *docker_definition
     stage: build
     script:
+        - docker pull $_API_REGISTRY:latest || true
         - docker build
             --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
@@ -50,6 +51,7 @@ build-admin-api-image:
     <<: *docker_definition
     stage: build
     script:
+        - docker pull $_ADMIN_API_REGISTRY:latest || true
         - docker build
             --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
