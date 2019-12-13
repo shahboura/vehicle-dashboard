@@ -28,34 +28,36 @@ build:
     <<: *sdk_definition
     stage: build
     script:
-        - dotnet build
+        - dotnet build -c Release
     artifacts:
         paths:
-            - "*/bin"
+            - "src/*/bin"
         expire_in: 2 week
 
 build-api-image:
     <<: *docker_definition
     stage: build
     script:
+        - docker pull $_API_REGISTRY:latest || true
         - docker build
             --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
             --build-arg VCS_URL=$CI_PROJECT_URL
             --tag $_API_REGISTRY:$CI_COMMIT_SHA
-            --file Dashboard.Api/Dockerfile .
+            --file ./src/Dashboard.Api/Dockerfile .
         - docker push $_API_REGISTRY:$CI_COMMIT_SHA
 
 build-admin-api-image:
     <<: *docker_definition
     stage: build
     script:
+        - docker pull $_ADMIN_API_REGISTRY:latest || true
         - docker build
             --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
             --build-arg VCS_URL=$CI_PROJECT_URL
             --tag $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
-            --file Dashboard.Admin.Api/Dockerfile .
+            --file ./src/Dashboard.Admin.Api/Dockerfile .
         - docker push $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
 
 unit-test:
@@ -65,7 +67,7 @@ unit-test:
         - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
     script: 
         - "dotnet test --collect:'XPlat Code Coverage'"
-        - ./tools/reportgenerator "-reports:Dashboard.Api.Tests/TestResults/*/coverage.cobertura.xml"
+        - ./tools/reportgenerator "-reports:tests/*/*/TestResults/*/coverage.cobertura.xml"
             "-targetdir:coveragereport" "-reporttypes:HTML;TextSummary;Badges"
         - cat ./coveragereport/Summary.txt
     coverage: '/Line coverage: (\d{1,2}.\d{1,2}\%)/'
