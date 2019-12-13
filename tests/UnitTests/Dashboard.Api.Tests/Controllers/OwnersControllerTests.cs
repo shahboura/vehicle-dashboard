@@ -13,7 +13,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Xunit;
 
-namespace Dashboard.Api.Controllers
+namespace Dashboard.Api.Tests.Controllers
 {
     public class OwnersControllerTests
     {
