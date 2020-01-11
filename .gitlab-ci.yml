@@ -1,5 +1,5 @@
 .sdk_job_template: &sdk_definition
-    image: mcr.microsoft.com/dotnet/core/sdk:3.0
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
 
 .docker_job_template: &docker_definition
     image: docker
