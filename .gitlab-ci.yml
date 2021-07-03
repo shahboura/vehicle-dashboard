@@ -1,5 +1,5 @@
 .sdk_job_template: &sdk_definition
-    image: mcr.microsoft.com/dotnet/core/sdk:3.0
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
 
 .docker_job_template: &docker_definition
     image: docker
@@ -43,6 +43,7 @@ build-api-image:
             --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
             --build-arg VCS_URL=$CI_PROJECT_URL
+            --cache-from $_API_REGISTRY:latest
             --tag $_API_REGISTRY:$CI_COMMIT_SHA
             --file ./src/Dashboard.Api/Dockerfile .
         - docker push $_API_REGISTRY:$CI_COMMIT_SHA
@@ -56,6 +57,7 @@ build-admin-api-image:
             --pull
             --build-arg VCS_REF=$CI_COMMIT_SHA
             --build-arg VCS_URL=$CI_PROJECT_URL
+            --cache-from $_ADMIN_API_REGISTRY:latest
             --tag $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
             --file ./src/Dashboard.Admin.Api/Dockerfile .
         - docker push $_ADMIN_API_REGISTRY:$CI_COMMIT_SHA
